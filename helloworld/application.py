@@ -58,17 +58,8 @@ def detect_labels(bucket, key, max_labels=10, min_confidence=50, region="us-east
     return json.dumps(response['Labels'])
 
 
-# @application.route('/animal_details', methods=['GET'])    
-# def get_nimal_data(animal_name='cheetah'): #need to get the name from the right label
-#     name = animal_name
-#     api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
-#     response = requests.get(api_url, headers={'X-Api-Key': 'pxwXJfjdW9672Yt5D3kPQQ==cEwkHnvnB0jFUzj6'}) 
-#     if response.status_code == requests.codes.ok:
-#         return json.dumps(response.text)
-#     else:
-#         print("Error:", response.status_code, response.text)
-#         return json.dumps(response.text)
 
+#Get the animal data from NinjaAPI
 @application.route('/animal_details', methods=['GET'])    
 def get_animal_data(animal_name='cheetah'):
     name = animal_name

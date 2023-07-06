@@ -5,6 +5,7 @@ from helloworld.flaskrun import flaskrun
 import requests
 import boto3
 from flask_cors import CORS
+import json
 
 application = Flask(__name__)
 CORS(application, resources={r"/*": {"origins": "*"}})
@@ -56,6 +57,30 @@ def detect_labels(bucket, key, max_labels=10, min_confidence=50, region="us-east
     
     return json.dumps(response['Labels'])
 
+
+# @application.route('/animal_details', methods=['GET'])    
+# def get_nimal_data(animal_name='cheetah'): #need to get the name from the right label
+#     name = animal_name
+#     api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
+#     response = requests.get(api_url, headers={'X-Api-Key': 'pxwXJfjdW9672Yt5D3kPQQ==cEwkHnvnB0jFUzj6'}) 
+#     if response.status_code == requests.codes.ok:
+#         return json.dumps(response.text)
+#     else:
+#         print("Error:", response.status_code, response.text)
+#         return json.dumps(response.text)
+
+@application.route('/animal_details', methods=['GET'])    
+def get_animal_data(animal_name='cheetah'):
+    name = animal_name
+    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
+    response = requests.get(api_url, headers={'X-Api-Key': 'pxwXJfjdW9672Yt5D3kPQQ==cEwkHnvnB0jFUzj6'}) 
+    if response.status_code == requests.codes.ok:
+        response_json = json.loads(response.text)
+        return json.dumps(response_json, indent=4)  # Convert the Python object to formatted JSON string
+    else:
+        #print("Error:", response.status_code, response.text)
+        response_json = json.loads(response.text)
+        return json.dumps(response.text)
 
 
 if __name__ == '__main__':

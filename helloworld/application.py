@@ -79,18 +79,18 @@ def compare_lable_to_table():
     # Fetch labels from the first source
     response1 = requests.get('http://ec2-34-230-71-62.compute-1.amazonaws.com/analyze')
     Labels = response1.json()
-    print(Labels)
     # Fetch animalTable names from the second source
     response2 = requests.get('http://ec2-34-230-71-62.compute-1.amazonaws.com/get_animalTable')
     Animal_Table = response2.json()
-    print(Animal_Table)
     # Compare each name    
     animal_name=""
     for label in Labels:
         for animal in Animal_Table:
             if label["Name"] == animal["animalName"]:
                 animal_name = label["Name"]
-                print(animal_name)
+                animal_data=get_animal_data(animal_name)
+                
+                print(json.loads(animal_data)[0])
                 break # Exit inner loop if a match is found
         if animal_name !="":
             break # Exit external loop if a match is found

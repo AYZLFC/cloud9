@@ -34,7 +34,7 @@ def get_frm():
 #Send photo from S3 to Rekognition and gets lables 
 #/<bucket>/<image> #not so relevent
 @application.route('/analyze', methods=['GET'])
-def analyze(bucket='savepics', image='pekignese.jpeg'): #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
+def analyze(bucket='savepics', image='spider.jpg'): #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
     return detect_labels(bucket, image)
     
     
@@ -72,6 +72,29 @@ def get_animal_data(animal_name='cheetah'):
         #print("Error:", response.status_code, response.text)
         response_json = json.loads(response.text)
         return json.dumps(response.text)
+
+
+@application.route('/test', methods=['GET']) 
+def compare_lable_to_table():
+    # Fetch labels from the first source
+    response1 = requests.get('http://ec2-34-230-71-62.compute-1.amazonaws.com/analyze')
+    Labels = response1.json()
+    print(Labels)
+    # Fetch animalTable names from the second source
+    response2 = requests.get('http://ec2-34-230-71-62.compute-1.amazonaws.com/get_animalTable')
+    Animal_Table = response2.json()
+    print(Animal_Table)
+    # Compare each name    
+    animal_name=""
+    for label in Labels:
+        for animal in Animal_Table:
+            if label["Name"] == animal["animalName"]:
+                animal_name = label["Name"]
+                print(animal_name)
+                break # Exit inner loop if a match is found
+        if animal_name !="":
+            break # Exit external loop if a match is found
+
 
 
 if __name__ == '__main__':

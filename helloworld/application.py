@@ -27,7 +27,7 @@ def get_frm():
     
     resp = table.scan()
     #print(str(resp))
-    return Response(json.dumps(str(resp['Items'])), mimetype='application/json', status=200)
+    return Response(json.dumps(resp['Items']), mimetype='application/json', status=200)
 
 
 

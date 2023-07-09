@@ -48,11 +48,4 @@ def detect_labels(img_data, region, max_labels, min_confidence):
 
 def get_animal_data(animal_name):
     response = requests.get(api_ninja_url.format(animal_name), headers={api_ninja_header_name : api_ninja_key })
-    if response.status_code == requests.codes.ok:
-        response_json = json.loads(response.text)
-        return json.dumps(response_json, indent=4)  # Convert the Python object to formatted JSON string
-    else:
-        #print("Error:", response.status_code, response.text)
-        response_json = json.loads(response.text)
-        return json.dumps(response_json, indent=4)
-    
+    return response

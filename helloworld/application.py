@@ -42,9 +42,9 @@ def upload_image():
 @application.route('/animal_details/<string:image_name>', methods=['GET'])
 def get_animal_details(image_name):
     sorted_image_name = image_name.replace('%20', ' ')
-    #details=animal_details(bucket="savepics", image_name=sorted_image_name , region="us-east-1", table_name="animalTable") #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
+    details=animal_details(bucket="savepics", image_name=sorted_image_name , region="us-east-1", table_name="animalTable")
     
-    return Response(sorted_image_name, mimetype='application/json', status=200)
+    return Response(details, mimetype='application/json', status=200)
     #json.dumps(details)
 # # #Gets all animals from dynmoDB
 # @application.route('/get_animalTable', methods=['GET'])

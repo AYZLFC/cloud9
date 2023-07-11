@@ -42,13 +42,13 @@ def post():
 def upload_image():
     data = request.data #supposed to get the photo from the POST request
     # Deliver the request content to bl.py
-    data_dict = json.loads(data)
-    file = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
+    #data_dict = json.loads(data)
+    #file = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
     s3 = boto3.client('s3', "us-east-1")
     
     try:
         # Retrieve the file from the POST request
-        #file = request.files['file']
+        file = request.files['file']
 
         # Set the desired object key or file name for the image in the S3 bucket
         object_name = 'images/' + file.filename

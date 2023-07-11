@@ -34,9 +34,15 @@ def post_to_bucket(file, object_name, bucket, region):
     
 # This function get the image from S3 bucket    
 def get_image(bucket, key, region):
-    s3 = boto3.resource(s3_resource, region)
-    image = s3.Object(bucket, key) # Get an Image from S3
-    return image
+    # s3 = boto3.resource(s3_resource, region)
+    # image = s3.Object(bucket, key) # Get an Image from S3
+    # return image
+    try:
+        s3 = boto3.resource(s3_resource, region)
+        image = s3.Object(bucket, key) # Get an Image from S3
+        return(True)
+    except Exception as e:
+        return(False)
 
 # This function detect the labels of an image with Recognition service
 def detect_labels(img_data, region, max_labels, min_confidence):

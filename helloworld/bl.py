@@ -1,8 +1,8 @@
 # This is the Business Logic Layer, where all logic happens
 import json
+import requests
 from dal import post_to_bucket, get_image , detect_labels, get_animal_data
 from dal import get_dynamo_result as dyno
-import requests
 
 
 max_labels=10 
@@ -16,14 +16,6 @@ def handle_request_data(file, bucket, region):
     object_name = 'images/' + file.filename
     return(post_to_bucket(file, object_name, bucket, region))
     
-    
-# def get_request_header(request_data):
-#     # convert the json to dictionary
-#     data_dict = json.loads(request_data)
-#     image = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
-    
-#     # dal.py function that upload the image to the S3 bucket
-#     post_to_bucket(image)
 
     
 # This function get the image, recognize the labels, compare with the animals table and get the animal details    

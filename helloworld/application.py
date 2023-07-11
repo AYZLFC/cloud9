@@ -10,6 +10,7 @@ import json
 # from helloworld.bl import get_request_header as get_request_header
 # from helloworld.bl import animal_details as animal_details
 # from helloworld.dal import get_dynamo_result as dyno
+from helloworld.bl import handle_request_data
 
 
 application = Flask(__name__)
@@ -40,27 +41,40 @@ def post():
 
 @application.route('/upload_image', methods=['POST'])
 def upload_image():
-    data = request.data #supposed to get the photo from the POST request
-    # Deliver the request content to bl.py
-    #data_dict = json.loads(data)
-    #file = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
-    s3 = boto3.client('s3', "us-east-1")
+    # Retrieve the file from the POST request
+    file = request.files['file']
     
-    try:
-        # Retrieve the file from the POST request
-        file = request.files['file']
-
-        # Set the desired object key or file name for the image in the S3 bucket
-        object_name = 'images/' + file.filename
-
-        # Upload the file to S3 bucket
-        s3.upload_fileobj(file, 'savepics', object_name)
-
-        #print( 'File uploaded successfully.')
+    # Deliver the request content to bl.py
+    response = handle_request_data(file, bucket = 'savepics', region = "us-east-1")
+    
+    if(response):
         return Response('File uploaded successfully.', mimetype='application/json', status=200)
-    except Exception as e:
+    else:
         #print( f'Error uploading file: {str(e)}')
-        return Response(f'Error uploading file: {str(e)}', mimetype='application/json', status=400)
+        return Response('Error uploading file', mimetype='application/json', status=200)
+
+
+
+# @application.route('/upload_image', methods=['POST'])
+# def upload_image():
+#     data = request.data #supposed to get the photo from the POST request
+#     s3 = boto3.client('s3', "us-east-1")
+    
+#     try:
+#         # Retrieve the file from the POST request
+#         file = request.files['file']
+
+#         # Set the desired object key or file name for the image in the S3 bucket
+#         object_name = 'images/' + file.filename
+
+#         # Upload the file to S3 bucket
+#         s3.upload_fileobj(file, 'savepics', object_name)
+
+#         #print( 'File uploaded successfully.')
+#         return Response('File uploaded successfully.', mimetype='application/json', status=200)
+#     except Exception as e:
+#         #print( f'Error uploading file: {str(e)}')
+#         return Response(f'Error uploading file: {str(e)}', mimetype='application/json', status=400)
 
 # #Gets all animals from dynmoDB
 @application.route('/get_animalTable', methods=['GET'])

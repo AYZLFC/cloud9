@@ -1,6 +1,7 @@
 # This is the Business Logic Layer, where all logic happens
 import simplejson as json
-from helloworld.dal import post_to_bucket, get_image , detect_labels, get_animal_data
+from helloworld.dal import post_to_bucket
+from helloworld.dal import get_image , detect_labels, get_animal_data
 from helloworld.dal import get_dynamo_result as dyno
 import requests
 
@@ -11,14 +12,19 @@ unmatch_to_db_message = "There isn't a match to an animal in our data-base."
 animal_name_key = "animalName"
 label_name_key = "Name"
 
-
-def get_request_header(request_data):
-    # convert the json to dictionary
-    data_dict = json.loads(request_data)
-    image = data_dict.get('image') # 'image' is a temporary name' till we create UI & UX on React 
+def handle_request_data(file, bucket, region):
+     # Set the desired object key or file name for the image in the S3 bucket
+    object_name = 'images/' + file.filename
+    return(post_to_bucket(file, object_name, bucket, region))
     
-    # dal.py function that upload the image to the S3 bucket
-    post_to_bucket(image)
+    
+# def get_request_header(request_data):
+#     # convert the json to dictionary
+#     data_dict = json.loads(request_data)
+#     image = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
+    
+#     # dal.py function that upload the image to the S3 bucket
+#     post_to_bucket(image)
 
     
 # This function get the image, recognize the labels, compare with the animals table and get the animal details    

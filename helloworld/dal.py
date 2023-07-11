@@ -23,9 +23,14 @@ def get_dynamo_result(region, table_name):
     
 
 # This function post the uploaded image to the S3 bucket
-def post_to_bucket(image):
-    #temporary content:
-    x='x'
+def post_to_bucket(file, object_name, bucket, region):
+    s3 = boto3.client(s3_resource, region)
+    try:
+        # Upload the file to S3 bucket
+        s3.upload_fileobj(file, bucket, object_name)
+        return(True)
+    except Exception as e:
+        return(False)
     
 # This function get the image from S3 bucket    
 def get_image(bucket, key, region):

@@ -23,10 +23,10 @@ def animal_details(bucket, image_name, region, table_name):
     # get the image from S3 bucket
     image = get_image(bucket, image_name, region)
     if (image):
-        return True
+        return ("True")
     else:
-        img_data = image.get()['Body'].read() # Read the image
-        return img_data
+        #img_data = image.get()['Body'].read() # Read the image
+        return("False")
         # # get lables of the image from Recognition
         # labels = detect_labels(img_data, region, max_labels, min_confidence)
         # labels = labels.json()

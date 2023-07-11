@@ -13,7 +13,7 @@ from bl import handle_request_data as imageToS3
 
 
 application = Flask(__name__)
-CORS(application, resources={r"/*": {"origins": "*"}})
+CORS(application, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # @application.route('/', methods=['GET'])
 # def get():

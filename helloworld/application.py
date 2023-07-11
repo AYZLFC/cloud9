@@ -40,15 +40,15 @@ def post():
 
 @application.route('/upload_image', methods=['POST'])
 def upload_image():
-    #data = request.data #supposed to get the photo from the POST request
+    data = request.data #supposed to get the photo from the POST request
     # Deliver the request content to bl.py
-    #data_dict = json.loads(data)
-    #file = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
+    data_dict = json.loads(data)
+    file = data_dict.get('body') # 'image' is a temporary name' till we create UI & UX on React 
     s3 = boto3.client('s3', "us-east-1")
     
     try:
         # Retrieve the file from the POST request
-        file = request.files['file']
+        #file = request.files['file']
 
         # Set the desired object key or file name for the image in the S3 bucket
         object_name = 'images/' + file.filename
@@ -56,9 +56,11 @@ def upload_image():
         # Upload the file to S3 bucket
         s3.upload_fileobj(file, 'savepics', object_name)
 
-        print( 'File uploaded successfully.')
+        #print( 'File uploaded successfully.')
+        return Response('File uploaded successfully.', mimetype='application/json', status=200)
     except Exception as e:
-        print( f'Error uploading file: {str(e)}')
+        #print( f'Error uploading file: {str(e)}')
+        return Response(f'Error uploading file: {str(e)}', mimetype='application/json', status=400)
 
 # #Gets all animals from dynmoDB
 @application.route('/get_animalTable', methods=['GET'])

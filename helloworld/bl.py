@@ -1,8 +1,7 @@
 # This is the Business Logic Layer, where all logic happens
-import simplejson as json
-from helloworld.dal import post_to_bucket
-from helloworld.dal import get_image , detect_labels, get_animal_data
-from helloworld.dal import get_dynamo_result as dyno
+import json
+from dal import post_to_bucket, get_image , detect_labels, get_animal_data
+from dal import get_dynamo_result as dyno
 import requests
 
 

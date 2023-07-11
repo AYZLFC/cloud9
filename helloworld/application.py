@@ -39,12 +39,13 @@ def upload_image():
         return Response('Error uploading file', mimetype='application/json', status=200)
 
 #This route for get the animal's details
-@application.route('/animal_details', methods=['GET','POST'])
-def get_animal_details():
-    details=animal_details(bucket="savepics", image_name=request.data , region="us-east-1", table_name="animalTable") #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
+@application.route('/animal_details/<string:image_name>', methods=['GET'])
+def get_animal_details(image_name):
+    sorted_image_name = image_name.replace('%20', ' ')
+    details=animal_details(bucket="savepics", image_name=sorted_image_name , region="us-east-1", table_name="animalTable") #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
     
-    return Response(json.dumps(details), mimetype='application/json', status=200)
-
+    return Response(sorted_image_name, mimetype='application/json', status=200)
+    #json.dumps(details)
 # # #Gets all animals from dynmoDB
 # @application.route('/get_animalTable', methods=['GET'])
 # def get_animalTable():

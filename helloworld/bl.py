@@ -19,11 +19,7 @@ def handle_request_data(file, bucket, region):
 
     
 # This function get the image, recognize the labels, compare with the animals table and get the animal details    
-def animal_details(bucket, data, region, table_name):
-    # convert the json to dictionary
-    data_dict = json.loads(data)
-    #image_name=data
-    image_name = data_dict.get('body')
+def animal_details(bucket, image_name, region, table_name):
     # get the image from S3 bucket
     image = get_image(bucket, image_name, region)
     img_data = image.get()['Body'].read() # Read the image

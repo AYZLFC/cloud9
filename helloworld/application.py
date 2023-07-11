@@ -39,9 +39,10 @@ def upload_image():
         return Response('Error uploading file', mimetype='application/json', status=200)
 
 #This route for get the animal's details
-@application.route('/animal_details/<string:file_name>', methods=['GET'])
-def get_animal_details(file_name):
-    animal_details(bucket="savepics", image_name=file_name , region="us-east-1", table_name="animalTable") #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
+@application.route('/animal_details', methods=['GET','POST'])
+def get_animal_details():
+    data = request.data
+    animal_details(bucket="savepics", data=data , region="us-east-1", table_name="animalTable") #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
     
     return Response(json.dumps(animal_details), mimetype='application/json', status=200)
 

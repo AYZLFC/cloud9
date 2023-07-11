@@ -8,6 +8,7 @@ from flask_cors import CORS
 import json
 # from helloworld.dal import get_dynamo_result as dyno
 from helloworld.bl import get_request_header, animal_details
+from helloworld.dal import get_dynamo_result as dyno
 
 
 application = Flask(__name__)
@@ -39,10 +40,10 @@ def get_animal_details(image_name='spider.jpg'):
 
 
 # #Gets all animals from dynmoDB
-# @application.route('/get_animalTable', methods=['GET'])
-# def get_animalTable():
-#     my_dyno = dyno('us-east-1', 'animalTable') #need to be move to bl.py
-#     return Response((my_dyno), mimetype='application/json', status=200)
+@application.route('/get_animalTable', methods=['GET'])
+def get_animalTable():
+    my_dyno = dyno('us-east-1', 'animalTable') #need to be move to bl.py
+    return Response((my_dyno), mimetype='application/json', status=200)
 
 
 

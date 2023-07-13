@@ -26,8 +26,7 @@ def animal_details(bucket, image_name, region, table_name):
     img_data = image.get()['Body'].read() # Read the image
     # get lables of the image from Recognition
     labels = detect_labels(img_data, region, max_labels, min_confidence)
-    labels['Labels'] = labels.json()
-    return labels
+    return labels['Labels']
         # # get items of dynamoDB table
         # my_dyno = dyno(region, table_name).json()
         # my_dyno = my_dyno.json()

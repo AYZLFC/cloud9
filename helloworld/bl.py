@@ -25,36 +25,31 @@ def animal_details(bucket, image_name, region, table_name):
     image = get_image(bucket, key, region)
     img_data = image.get()['Body'].read() # Read the image
     # get lables of the image from Recognition
-    labels = detect_labels(img_data, region, max_labels, min_confidence)
-    return labels['Labels']
-        # # get items of dynamoDB table
-        # my_dyno = dyno(region, table_name).json()
-        # my_dyno = my_dyno.json()
-        
-        # # compare labels to items
-        # animal_name=""
-        # for label in labels:
-        #     for animal in my_dyno:
-        #         if label[label_name_key] == animal[animal_name_key]:
-        #             animal_name = label[label_name_key]
-        #             # get ninja_api response
-        #             response=get_animal_data(animal_name)
-        #             #print(json.loads(response)[0])
-                    
-        #             if response.status_code == requests.codes.ok:
-        #                 response_json = json.loads(response.text)
-        #                 animal_details = json.dumps(response_json, indent=4)  # Convert the Python object to formatted JSON string
-        #             else:
-        #                 #print("Error:", response.status_code, response.text)
-        #                 response_json = json.loads(response.text)
-        #                 animal_details =  json.dumps(response_json, indent=4)
-                    
-        #             break # Exit inner loop if a match is found
-        #     if animal_name !="":
-        #         break # Exit external loop if a match is found
-        # if animal_name =="":
-        #     return (unmatch_to_db_message)
-        # return animal_details
-        
+    labels = detect_labels(img_data, region, max_labels, min_confidence)['Labels']
+    # get items of dynamoDB table
+    my_dyno = dyno(region, table_name)
+    # compare labels to items
+    animal_name=""
+    for label in labels:
+        for animal in my_dyno:
+            if label[label_name_key] == animal[animal_name_key]:
+                animal_name = label[label_name_key]
+                # get ninja_api response
+                response=get_animal_data(animal_name)
+                #print(json.loads(response)[0])
+                
+                if response.status_code == requests.codes.ok:
+                    animal_details = json.loads(response.text)
+                else:
+                    #print("Error:", response.status_code, response.text)
+                    animal_details = json.loads(response.text)
+                
+                break # Exit inner loop if a match is found
+        if animal_name !="":
+            break # Exit external loop if a match is found
+    if animal_name =="":
+        return (unmatch_to_db_message)
+    return animal_details
+    
     
     

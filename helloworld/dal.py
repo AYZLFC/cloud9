@@ -19,7 +19,7 @@ def get_dynamo_result(region, table_name):
     resp = table.scan()
     #print(str(resp))
     
-    return json.dumps(resp['Items'])
+    return (resp['Items'])
     
 
 # This function post the uploaded image to the S3 bucket

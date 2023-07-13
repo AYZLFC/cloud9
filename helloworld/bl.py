@@ -22,11 +22,12 @@ def handle_request_data(file, bucket, region):
 def animal_details(bucket, image_name, region, table_name):
     # get the image from S3 bucket
     image = get_image(bucket, image_name, region)
-    img_data = image.get()['Body'].read() # Read the image
-    # get lables of the image from Recognition
-    labels = detect_labels(img_data, region, max_labels, min_confidence)
-    labels = labels.json()
-    return(labels)
+    return image
+        #img_data = image.get()['Body'].read() # Read the image
+        ## get lables of the image from Recognition
+        #labels = detect_labels(img_data, region, max_labels, min_confidence)
+        #labels = labels.json()
+    
         # # get items of dynamoDB table
         # my_dyno = dyno(region, table_name).json()
         # my_dyno = my_dyno.json()

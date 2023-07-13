@@ -20,15 +20,14 @@ def handle_request_data(file, bucket, region):
     
 # This function get the image, recognize the labels, compare with the animals table and get the animal details    
 def animal_details(bucket, image_name, region, table_name):
-    image_name= 'images/'+image_name
+    key= 'images/'+image_name
     # get the image from S3 bucket
-    image = get_image(bucket, image_name, region)
-    return image
-        #img_data = image.get()['Body'].read() # Read the image
-        ## get lables of the image from Recognition
-        #labels = detect_labels(img_data, region, max_labels, min_confidence)
-        #labels = labels.json()
-    
+    image = get_image(bucket, key, region)
+    img_data = image.get()['Body'].read() # Read the image
+    # get lables of the image from Recognition
+    labels = detect_labels(img_data, region, max_labels, min_confidence)
+    labels = labels.json()
+    return labels
         # # get items of dynamoDB table
         # my_dyno = dyno(region, table_name).json()
         # my_dyno = my_dyno.json()

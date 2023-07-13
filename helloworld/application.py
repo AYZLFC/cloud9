@@ -63,29 +63,29 @@ def get_animal_details(image_name):
 
 # # #Send photo from S3 to Rekognition and gets lables 
 # # #/<bucket>/<image> #not so relevent
-# @application.route('/analyze', methods=['GET'])
-# def analyze(bucket='savepics', image='spider.jpg'): #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
-#     return detect_labels(bucket, image)
+@application.route('/analyze', methods=['GET'])
+def analyze(bucket='savepics', image='images/bar at the wild west.jpg'): #we need to change the name of the image to somthing constant and to make sure to set this name on the React code as the name of the image when user add an image
+    return detect_labels(bucket, image)
     
     
-# def detect_labels(bucket, key, max_labels=10, min_confidence=50, region="us-east-1"):
+def detect_labels(bucket, key, max_labels=10, min_confidence=50, region="us-east-1"):
     
-#     rekognition = boto3.client("rekognition", region)
-#     s3 = boto3.resource('s3', region_name = 'us-east-1')
+    rekognition = boto3.client("rekognition", region)
+    s3 = boto3.resource('s3', region_name = 'us-east-1')
     
-#     image = s3.Object(bucket, key) # Get an Image from S3
+    image = s3.Object(bucket, key) # Get an Image from S3
     
-#     img_data = image.get()['Body'].read() # Read the image
+    img_data = image.get()['Body'].read() # Read the image
 
-#     response = rekognition.detect_labels(
-#         Image={
-#             'Bytes': img_data
-#         },
-#         MaxLabels=max_labels,
-# 		MinConfidence=min_confidence,
-#     )
+    response = rekognition.detect_labels(
+        Image={
+            'Bytes': img_data
+        },
+        MaxLabels=max_labels,
+		MinConfidence=min_confidence,
+    )
     
-#     return json.dumps(response['Labels'])
+    return json.dumps(response['Labels'])
 
 
 

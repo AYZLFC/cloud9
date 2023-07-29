@@ -4,12 +4,13 @@ import requests
 from dal import post_to_bucket, get_image , detect_labels, get_animal_data, get_animal_ids, add_new_animal_values
 from dal import get_dynamo_result as dyno
 
-
+#constant (permanent) values
 max_labels=10 
 min_confidence=50
 unmatch_to_db_message = "There isn't a match to an animal in our data-base."
 animal_name_key = "animalName"
 label_name_key = "Name"
+
 
 def handle_request_data(file, bucket, region):
      # Set the desired object key or file name for the image in the S3 bucket
@@ -53,11 +54,15 @@ def animal_details(bucket, image_name, region, table_name):
     
     
 def add_new_animal(region, table_name, field_name, animal_name):
+    #Retrieve all animalIds
     get_animal_ids_function_response = get_animal_ids(region, table_name, field_name)
+    #Check that an error didn't occured
     if len(get_animal_ids_function_response)==2:
-        response= get_animal_ids_function_response[0]
         attribute_to_maximize = field_name
+        #Split the outcome and take only resource (table)
         table = get_animal_ids_function_response[1]
+        #Split the outcome and take only ids
+        response= get_animal_ids_function_response[0]
         items = response['Items']
         max_animal_id = None
         
@@ -66,9 +71,12 @@ def add_new_animal(region, table_name, field_name, animal_name):
             animal_id = int(item[attribute_to_maximize])  # Access the attribute value directly
             if max_animal_id is None or animal_id > max_animal_id:
                 max_animal_id = animal_id
+        #Set the new max id
         max_animal_id=max_animal_id+1
         max_animal_id_str = str(max_animal_id)
+        #Create new record (item)
         add_new_animal_values_response = add_new_animal_values(max_animal_id_str, animal_name, table)
+        #Check that an error didn't occured
         if (add_new_animal_values_response==True):
             return (True)
         else:

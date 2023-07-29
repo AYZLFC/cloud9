@@ -3,7 +3,7 @@ import boto3
 import json
 import requests
 
-
+#constant (permanent) values
 db_resource = 'dynamodb'
 s3_resource = 's3'
 rekognitoin_resource = 'rekognition'

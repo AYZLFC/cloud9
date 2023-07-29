@@ -27,7 +27,9 @@ def add_new_animal():
     # retreive the parameters
     animal_name = data_dict.get('animal_name','default')
     
+    # Deliver the request content to bl.py
     response_add_animal = add_new_animal_bl(region="us-east-1", table_name="animalTable", field_name="animalId", animal_name=animal_name)
+    #Check that an error didn't occured
     if (response_add_animal==True):
         return Response('New animal was added successfully.', mimetype='application/json', status=200)
     else:
@@ -52,7 +54,9 @@ def upload_image():
 #This route for get the animal's details
 @application.route('/animal_details/<string:image_name>', methods=['GET'])
 def get_animal_details(image_name):
+    #Sort image name because of retreive from url
     sorted_image_name = image_name.replace('%20', ' ')
+    # Deliver the request content to bl.py
     details=animal_details(bucket="savepics", image_name=sorted_image_name , region="us-east-1", table_name="animalTable")
     
     return Response(json.dumps(details), mimetype='application/json', status=200)

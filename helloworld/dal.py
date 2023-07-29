@@ -55,3 +55,28 @@ def detect_labels(img_data, region, max_labels, min_confidence):
 def get_animal_data(animal_name):
     response = requests.get(api_ninja_url.format(animal_name), headers={api_ninja_header_name : api_ninja_key })
     return response
+    
+def get_animal_ids(region, table_name, field_name):
+    dynamodb = boto3.resource(db_resource, region_name=region)
+    table = dynamodb.Table(table_name)
+    # Define the attribute to retrieve the maximum value
+    attribute_to_maximize = field_name
+    try:
+        # Perform the scan with ProjectionExpression and FilterExpression
+        response = table.scan(
+            ProjectionExpression=attribute_to_maximize,
+        )
+        return(response, table)
+    except Exception as e:
+        return e
+    
+def add_new_animal_values(max_animal_id_str, animal_name, table):
+    try:
+        item={
+        'animalId': max_animal_id_str,
+        'animalName': animal_name
+        }
+        table.put_item(Item=item)
+        return (True)
+    except Exception as e:
+        return e

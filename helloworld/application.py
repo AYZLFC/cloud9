@@ -8,6 +8,7 @@ from flask_cors import CORS
 import json
 from bl import animal_details as animal_details
 from bl import handle_request_data as imageToS3
+from bl import add_new_animal as add_new_animal_bl
 
 
 
@@ -22,7 +23,25 @@ CORS(application, resources={r"/*": {"origins": "*"}})
 # @application.route('/', methods=['POST'])
 # def post():
 #     return Response(json.dumps({'Output': 'Hello World'}), mimetype='application/json', status=200)
+
+#curl -i -X POST -d'{"animal_name":"Dog"}' -H "Content-Type: application/json" http://localhost:8000/add_new_animal
+#This route for adding new animals to the DynmoDB table
+@application.route('/add_new_animal', methods=['POST'])
+def add_new_animal():
+    # get post data  
+    data = request.data
+    # convert the json to dictionary
+    data_dict = json.loads(data)
+    # retreive the parameters
+    animal_name = data_dict.get('animal_name','default')
     
+    response_add_animal = add_new_animal_bl(region="us-east-1", table_name="animalTable", field_name="animalId", animal_name=animal_name)
+    if (response_add_animal==True):
+        return Response('New animal was added successfully.', mimetype='application/json', status=200)
+    else:
+        return Response('Error in adding the new animal. Please contact support', mimetype='application/json', status=200)
+    
+ 
 #This route for uploading an image to S3 bucket
 @application.route('/upload_image', methods=['POST'])
 def upload_image():

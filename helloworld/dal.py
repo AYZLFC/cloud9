@@ -36,6 +36,7 @@ def post_to_bucket(file, object_name, bucket, region):
 def get_image(bucket, key, region):
     s3 = boto3.resource(s3_resource, region)
     image = s3.Object(bucket, key) # Get an Image from S3
+    print(image)
     return(image)
     
 

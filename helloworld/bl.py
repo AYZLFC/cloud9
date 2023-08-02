@@ -49,7 +49,7 @@ def animal_details(bucket, image_name, region, table_name):
         if animal_name !="":
             break # Exit external loop if a match is found
     if animal_name =="":
-        return (json.loads(unmatch_to_db_message))
+        return (unmatch_to_db_message)
     return animal_details
     
     
